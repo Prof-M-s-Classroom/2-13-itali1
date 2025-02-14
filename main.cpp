@@ -43,6 +43,16 @@ public:
         temp->next = newNode;
         length++;
     }
+    Node<T> *get(int index) {
+        if(index < 0 || index >= length) {
+            return nullptr;
+        }
+        Node<T>* temp = head;
+        for(int i = 0; i < index; i++) {
+            temp = temp->next;
+        }
+        return temp;
+    }
 
     void addhead(T *value) {
         Node<T> *newNode = new Node<T>(value);
@@ -68,14 +78,56 @@ public:
 
     void deleteNode(int index) {
        //TODO:Write the function to delete at the given index. Reuse the pre-written functions for edge cases. Account for missing index.
+        if(index == 0) {
+            Node<T> *temp = head;
+            head = temp->next;
+            delete temp;
+            length--;
+        }
+        else if(index > 0) {
+            Node<T> *temp = head;
+            while(temp->next != index) {
+                temp = temp->next;
+            }
+            delete temp;
+            length--;
+        }
     }
 
    void insert(int index, T *value) {
         //TODO:Write a function to insert a new node at a give index. Reuse the pre-written functions for edge cases. Account for missing index
+        if(index < 0 || index > length) {
+            cout<<"Index is invalid"<<endl;
+            return;
+        }
+        if(index = 0) {
+            addhead(value);
+        }
+        if(index == length) {
+            add(value);
+        }
+        else {
+            Node<T>* newNode = new Node<T>(value);
+            Node<T> *temp = get(index-1);
+            newNode->next = temp->next;
+            temp->next = newNode;
+            length++;
+        }
+        return;
     }
 
    void reverselist(){
         //TODO:Write a function to reverse the list using the logic from the slide.
+        Node<T> *prev = NULL;
+        Node<T> *current = head;
+        Node<T> *next;
+        while (current != NULL) {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+        head = prev;
     }
 
     void print() {
